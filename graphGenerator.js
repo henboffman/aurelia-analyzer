@@ -65,7 +65,6 @@ function generateFocusedDependencyGraph(dependencies, focusComponent, exportDir,
     const focusedGraphFileName = path.join(exportDir, `focused-aurelia-dependencies-${focusComponent}-${dateString}.dot`);
     fs.writeFileSync(focusedGraphFileName, dotContent);
     console.log(`Focused dependency graph DOT file generated: ${focusedGraphFileName}`);
-    console.log(`\nUse Graphviz to generate the graph image: ${COLORS.FgCyan} dot -Tpng ${focusedGraphFileName} -o focused-dependencies.png ${COLORS.Reset}`);
 }
 
 module.exports = { generateFullDependencyGraph, generateFocusedDependencyGraph };

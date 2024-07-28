@@ -73,9 +73,9 @@ The analyzer generates several files in the `exports` directory:
 After you have run the report, you can run the following commands to generate `.png` files containing a visual representation of your dependency graph. To generate the files, run
 
 ```
-dot -Tpng -Gdpi=300 exports/aurelia-dependencies-[date].dot -o aurelia_dependencies.png
+dot -Tpng -Gdpi=300 exports/[month]-[day]/aurelia-dependencies-[month]-[day].dot -o aurelia_dependencies.png
 
-dot -Tpng -Gdpi=300 exports/focused-aurelia-dependencies-[component]-[date].dot -o focused_aurelia_dependencies.png
+dot -Tpng -Gdpi=300 exports/[month]-[day]/focused-aurelia-dependencies-[component]-[month]-[day].dot -o focused_aurelia_dependencies.png
 ```
 
 Replace `[date]` and `[component]` with the actual values from the generated file names.
@@ -108,3 +108,6 @@ This tool is provided as-is, without any guarantees or warranty. The authors are
   - build a log of how one event can trigger another event, and output the event chains present
 - check for multi-level nesting/referencing of services
 - Maybe build a tool which automatically converts from duraandal to aurelia?
+- in the hierarchy report, denote methods with ()
+- generate CSVs for the tables in addition to the full text file report
+- check the list of circular references to avoid adding duplicates

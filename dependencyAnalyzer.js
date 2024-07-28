@@ -1,11 +1,12 @@
 function detectCircularDependencies(dependencies) {
-    const circularDeps = [];
+    const circularDeps = new Set();
 
     function dfs(component, visited = new Set(), path = []) {
         if (visited.has(component)) {
             const cycleStart = path.indexOf(component);
             if (cycleStart !== -1) {
-                circularDeps.push(path.slice(cycleStart).concat(component));
+                const cycle = path.slice(cycleStart).concat(component);
+                circularDeps.add(cycle.join(' -> '));
             }
             return;
         }
@@ -25,7 +26,7 @@ function detectCircularDependencies(dependencies) {
         dfs(component);
     }
 
-    return circularDeps;
+    return Array.from(circularDeps);
 }
 
 module.exports = { detectCircularDependencies };

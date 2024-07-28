@@ -7,12 +7,24 @@ function generateReport(components, dependencies, componentUsage, publishedEvent
     let reportContent = 'Aurelia Application Analysis Report\n';
     reportContent += '===================================\n\n';
 
+    // const circularDeps = detectCircularDependencies(dependencies);
+    // if (circularDeps.length > 0) {
+    //     reportContent += `${COLORS.FgRed}Circular Dependencies Detected:\n`;
+    //     reportContent += '--------------------------------\n';
+    //     circularDeps.forEach(cycle => {
+    //         reportContent += cycle.join(' -> ') + ' -> ' + cycle[0] + '\n';
+    //     });
+    //     reportContent += `${COLORS.Reset}\n`;
+    // } else {
+    //     reportContent += `${COLORS.FgGreen}No circular dependencies detected.\n\n${COLORS.Reset}`;
+    // }
+
     const circularDeps = detectCircularDependencies(dependencies);
     if (circularDeps.length > 0) {
         reportContent += `${COLORS.FgRed}Circular Dependencies Detected:\n`;
         reportContent += '--------------------------------\n';
         circularDeps.forEach(cycle => {
-            reportContent += cycle.join(' -> ') + ' -> ' + cycle[0] + '\n';
+            reportContent += `${cycle}\n`;
         });
         reportContent += `${COLORS.Reset}\n`;
     } else {
@@ -66,11 +78,18 @@ function generateReport(components, dependencies, componentUsage, publishedEvent
         });
     });
 
+    // const reportFileName = path.join(exportDir, `aurelia-app-report-${dateString}.txt`);
+    // fs.writeFileSync(reportFileName, reportContent);
+
+    // console.log(`\n${COLORS.FgGreen}Total components found: ${components.length}${COLORS.Reset}`);
+    // console.log(`Report generated: ${COLORS.FgCyan}${reportFileName}${COLORS.Reset}`);
+
     const reportFileName = path.join(exportDir, `aurelia-app-report-${dateString}.txt`);
     fs.writeFileSync(reportFileName, reportContent);
 
     console.log(`\n${COLORS.FgGreen}Total components found: ${components.length}${COLORS.Reset}`);
     console.log(`Report generated: ${COLORS.FgCyan}${reportFileName}${COLORS.Reset}`);
+
 }
 
 function analyzeEvents(publishedEvents, eventSubscriptions) {

@@ -12,13 +12,13 @@ function analyzeAureliaApp(directory, focusComponent) {
     const componentUsage = {};
     const publishedEvents = {};
     const eventSubscriptions = {};
-    const exportDir = 'exports';
     const currentDate = new Date();
     const dateString = `${currentDate.toLocaleString('default', { month: 'long' })}-${currentDate.getDate()}`;
+    const exportDir = path.join('exports', dateString);
 
     // Ensure export directory exists
     if (!fs.existsSync(exportDir)) {
-        fs.mkdirSync(exportDir);
+        fs.mkdirSync(exportDir, { recursive: true });
     }
 
     const { components: scannedComponents, dependencies: scannedDependencies, componentUsage: scannedComponentUsage, publishedEvents: scannedPublishedEvents, eventSubscriptions: scannedEventSubscriptions } = scanDirectory(directory);
@@ -39,6 +39,8 @@ function analyzeAureliaApp(directory, focusComponent) {
             console.log(`\n${COLORS.FgYellow}Warning: Component "${focusComponent}" not found in the scanned files. Focused graph not generated.${COLORS.Reset}`);
         }
     }
+
+    console.log(`\n${COLORS.FgGreen}Analysis complete. Results saved in: ${exportDir}${COLORS.Reset}`);
 
     return { components, dependencies, componentUsage };
 }
