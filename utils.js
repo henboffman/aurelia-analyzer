@@ -120,23 +120,34 @@ function analyzeComponent(filePath, content) {
         publishedEvents[eventName].files.add(fileName);
     }
 
-    const subscribeRegex = /\.subscribe\s*\(\s*([^,]+),\s*([^)]+)\)/g;
+    const subscribeRegex = /\.subscribe\s*\(\s*([^,]+),\s*([^)]+)\s*\)\s*=>\s*{([^}]*?)}/g;
     while ((match = subscribeRegex.exec(content)) !== null) {
         const eventName = match[1].trim().replace(/['"]/g, '');
-        const handler = extractHandler(match[2]);
+        const lambdaParams = match[2].trim();
+        const lambdaBody = match[3].trim();
+
         if (!eventSubscriptions[eventName]) {
             eventSubscriptions[eventName] = [];
         }
-        const callChain = analyzeCallChain(content, handler);
+
+        const fullLambda = `(${lambdaParams}) => {\n    ${lambdaBody}\n}`;
+
         eventSubscriptions[eventName].push({
             component: componentName,
-            handler: handler,
-            chain: callChain.length > 0 ? callChain : [handler],
+            handler: fullLambda,
             file: fileName
         });
     }
 
     return { componentName, deps, events: publishedEvents, subscriptions: eventSubscriptions };
+}
+
+function createCSV(headers, rows) {
+    const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+    return csvContent;
 }
 
 module.exports = {
@@ -146,5 +157,6 @@ module.exports = {
     escapeRegExp,
     extractHandler,
     analyzeCallChain,
-    analyzeComponent
+    analyzeComponent,
+    createCSV
 };

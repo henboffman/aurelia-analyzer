@@ -107,7 +107,4 @@ This tool is provided as-is, without any guarantees or warranty. The authors are
 - look for event circularity
   - build a log of how one event can trigger another event, and output the event chains present
 - check for multi-level nesting/referencing of services
-- Maybe build a tool which automatically converts from duraandal to aurelia?
 - in the hierarchy report, denote methods with ()
-- generate CSVs for the tables in addition to the full text file report
-- check the list of circular references to avoid adding duplicates
